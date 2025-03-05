@@ -6,26 +6,34 @@ using System.Windows.Forms;
 
 namespace MusicStore
 {
-    class Init_Conn
+    public class Init_Conn
+{
+    private static readonly string _connectionString;
+
+    static Init_Conn()
     {
-        private readonly SqlConnection conn = null;
-        public static void InitializeConnection()
+        try
         {
-            try
-            {
-                var conn = new SqlConnection(ConfigurationManager.ConnectionStrings["MusicConn"].ConnectionString);
-                conn.StateChange += Connection_StateChange;
-            }
-            catch (ConfigurationErrorsException ex)
-            {
-                MessageBox.Show($"Ошибка конфигурации: {ex.Message}", "Ошибка",
-                               MessageBoxButtons.OK, MessageBoxIcon.Error);
-                throw;
-            }
+            _connectionString = ConfigurationManager.ConnectionStrings["MusicConn"].ConnectionString;
         }
-        private static void Connection_StateChange(object sender, StateChangeEventArgs e)
+        catch (ConfigurationErrorsException ex)
         {
-            Debug.WriteLine($"Состояние соединения изменилось на: {e.CurrentState}");
+            MessageBox.Show($"Ошибка конфигурации: {ex.Message}", "Ошибка",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            throw;
         }
     }
+
+    public static SqlConnection GetConnection()
+    {
+        var conn = new SqlConnection(_connectionString);
+        conn.StateChange += Connection_StateChange;
+        return conn;
+    }
+
+    private static void Connection_StateChange(object sender, StateChangeEventArgs e)
+    {
+        Debug.WriteLine($"Состояние соединения изменилось на: {e.CurrentState}");
+    }
+}
 }
