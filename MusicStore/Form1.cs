@@ -15,6 +15,7 @@ namespace MusicStore
         public Form1()
         {
             InitializeComponent();
+            Init_Conn.InitializeConnection();
         }
     }
 }
