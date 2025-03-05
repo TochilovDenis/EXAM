@@ -1,0 +1,12 @@
+CREATE TABLE [dbo].[Records]
+(
+    [Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    [Title] NVARCHAR(200) NOT NULL,
+    [Artist] NVARCHAR(200) NOT NULL,
+    [Publisher] NVARCHAR(200) NOT NULL,
+    [TrackCount] INT NOT NULL,
+    [Genre] NVARCHAR(100) NOT NULL,
+    [ReleaseYear] INT NOT NULL,
+    [CostPrice] DECIMAL(10,2) NOT NULL,
+    [SellingPrice] DECIMAL(10,2) NOT NULL
+);
