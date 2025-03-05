@@ -14,8 +14,7 @@ namespace MusicStore
     {
         private readonly RecordRepository repository;
         private readonly BindingSource bindingSource;
-        private readonly DataGridView dgvRecords;
-                public Form1()
+        public Form1()
         {
             InitializeComponent();
 
@@ -127,6 +126,5 @@ namespace MusicStore
                 }
             }
         }
-
     }
 }
