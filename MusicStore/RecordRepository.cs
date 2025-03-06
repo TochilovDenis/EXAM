@@ -1,37 +1,40 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace MusicStore
 {
     public class RecordRepository
     {
-        public List<Record> GetAllRecords()
+        public async Task<List<Record>> GetAllRecordsAsync()
         {
             var records = new List<Record>();
             using (var conn = Init_Conn.GetConnection())
             {
-                conn.Open();
+                await conn.OpenAsync();
                 const string sql = @"SELECT Id, Title, Artist, Publisher, TrackCount, 
-                               Genre, ReleaseYear, CostPrice, SellingPrice 
-                               FROM Records ORDER BY Title";
+                           Genre, ReleaseYear, CostPrice, SellingPrice 
+                           FROM Records ORDER BY Title";
 
                 using (var cmd = new SqlCommand(sql, conn))
-                using (var reader = cmd.ExecuteReader())
                 {
-                    while (reader.Read())
+                    using (var reader = await cmd.ExecuteReaderAsync())
                     {
-                        records.Add(new Record
+                        while (await reader.ReadAsync())
                         {
-                            Id = reader.GetInt32(0),
-                            Title = reader.GetString(1),
-                            Artist = reader.GetString(2),
-                            Publisher = reader.GetString(3),
-                            TrackCount = reader.GetInt32(4),
-                            Genre = reader.GetString(5),
-                            ReleaseYear = reader.GetInt32(6),
-                            CostPrice = reader.GetDecimal(7),
-                            SellingPrice = reader.GetDecimal(8)
-                        });
+                            records.Add(new Record
+                            {
+                                Id = reader.GetInt32(0),
+                                Title = reader.GetString(1),
+                                Artist = reader.GetString(2),
+                                Publisher = reader.GetString(3),
+                                TrackCount = reader.GetInt32(4),
+                                Genre = reader.GetString(5),
+                                ReleaseYear = reader.GetInt32(6),
+                                CostPrice = reader.GetDecimal(7),
+                                SellingPrice = reader.GetDecimal(8)
+                            });
+                        }
                     }
                 }
             }
@@ -44,9 +47,9 @@ namespace MusicStore
             {
                 conn.Open();
                 const string sql = @"INSERT INTO Records (Title, Artist, Publisher, TrackCount, 
-                                   Genre, ReleaseYear, CostPrice, SellingPrice)
-                               VALUES (@Title, @Artist, @Publisher, @TrackCount, 
-                                      @Genre, @ReleaseYear, @CostPrice, @SellingPrice)";
+                           Genre, ReleaseYear, CostPrice, SellingPrice)
+                           VALUES (@Title, @Artist, @Publisher, @TrackCount, 
+                                  @Genre, @ReleaseYear, @CostPrice, @SellingPrice)";
 
                 using (var cmd = new SqlCommand(sql, conn))
                 {
