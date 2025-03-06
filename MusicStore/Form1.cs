@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -27,13 +28,19 @@ namespace MusicStore
                 this.Controls.Add(dgvRecords);
             }
             InitControls();
-            LoadData();
+            Task task = LoadData();
         }
 
         private void InitControls()
         {
             dgvRecords.AutoGenerateColumns = false;
             dgvRecords.DataSource = bindingSource;
+
+            dgvRecords.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Id",
+                DataPropertyName = "ID"
+            });
 
             dgvRecords.Columns.Add(new DataGridViewTextBoxColumn
             {
@@ -83,23 +90,31 @@ namespace MusicStore
                 DataPropertyName = "SellingPrice"
             });
         }
-
-        private void LoadData()
+        private async Task LoadData()
         {
-            bindingSource.DataSource = repository.GetAllRecords();
+            try
+            {
+                var records = await repository.GetAllRecordsAsync();
+                bindingSource.DataSource = records;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private async void btnAdd_Click_1(object sender, EventArgs e)
         {
             var form = new RecordForm(null);
             if (form.ShowDialog() == DialogResult.OK)
             {
                 repository.AddRecord(form.Record);
-                LoadData();
+                await LoadData();
             }
         }
 
-        private void btnEdit_Click(object sender, EventArgs e)
+        private async void btnEdit_Click_1(object sender, EventArgs e)
         {
             if (bindingSource.Current != null)
             {
@@ -108,12 +123,12 @@ namespace MusicStore
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     repository.UpdateRecord(form.Record);
-                    LoadData();
+                    await LoadData();
                 }
             }
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private async void btnDelete_Click_1(object sender, EventArgs e)
         {
             if (bindingSource.Current != null)
             {
@@ -122,7 +137,7 @@ namespace MusicStore
                     "Подтверждение", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     repository.DeleteRecord(record.Id);
-                    LoadData();
+                    await LoadData();
                 }
             }
         }
