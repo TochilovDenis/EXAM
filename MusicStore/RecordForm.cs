@@ -34,18 +34,18 @@ namespace MusicStore
             nudSellingPrice.DataBindings.Add("Value", Record, "SellingPrice");
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private void btnOK_Click_1(object sender, EventArgs e)
         {
             if (ValidateInput())
             {
-                Record.Title = Record.Title;
-                Record.Artist = Record.Artist;
-                Record.Publisher = Record.Publisher;
-                Record.TrackCount = Record.TrackCount;
-                Record.Genre = Record.Genre;
-                Record.ReleaseYear = Record.ReleaseYear;
-                Record.CostPrice = Record.CostPrice;
-                Record.SellingPrice = Record.SellingPrice;
+                Record.Title = txtTitle.Text.Trim();
+                Record.Artist = txtArtist.Text.Trim();
+                Record.Publisher = txtPublisher.Text.Trim();
+                Record.TrackCount = Convert.ToInt32(nudTrackCount.Value);
+                Record.Genre = txtGenre.Text.Trim();
+                Record.ReleaseYear = Convert.ToInt32(nudReleaseYear.Value);
+                Record.CostPrice = Convert.ToDecimal(nudCostPrice.Value);
+                Record.SellingPrice = Convert.ToDecimal(nudSellingPrice.Value);
 
                 DialogResult = DialogResult.OK;
                 Close();
@@ -63,6 +63,12 @@ namespace MusicStore
             if (Record.SellingPrice <= Record.CostPrice)
             {
                 MessageBox.Show("Цена продажи должна быть больше себестоимости");
+                return false;
+            }
+
+            if (nudTrackCount.Value < 1 || nudReleaseYear.Value < 1900)
+            {
+                MessageBox.Show("Проверьте корректность числовых значений");
                 return false;
             }
 
