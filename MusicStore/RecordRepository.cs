@@ -167,6 +167,28 @@ namespace MusicStore
             }
         }
 
+        public async Task CreatePromotionAsync(int recordId, DateTime startDate,
+                                         DateTime endDate, decimal discountPercentage, string description)
+        {
+            using (var conn = Init_Conn.GetConnection())
+            {
+                await conn.OpenAsync();
+
+                const string sql = @"
+                INSERT INTO Promotions (RecordId, StartDate, EndDate, DiscountPercentage, Description)
+                VALUES (@RecordId, @StartDate, @EndDate, @DiscountPercentage, @Description)";
+                using (var cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@RecordId", recordId);
+                    cmd.Parameters.AddWithValue("@StartDate", startDate);
+                    cmd.Parameters.AddWithValue("@EndDate", endDate);
+                    cmd.Parameters.AddWithValue("@DiscountPercentage", discountPercentage);
+                    cmd.Parameters.AddWithValue("@Description", description);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
 
     }
 }
