@@ -189,6 +189,39 @@ namespace MusicStore
             }
         }
 
+        public async Task ReserveRecordAsync(int recordId, string customerName, DateTime expireDate)
+        {
+            using (var conn = Init_Conn.GetConnection())
+            {
+                await conn.OpenAsync();
 
+                // Проверяем наличие записи и её доступность
+                const string checkSql = @"
+                SELECT COUNT(*) FROM Records 
+                WHERE Id = @Id AND Id NOT IN (
+                    SELECT RecordId FROM ReservedRecords 
+                    WHERE IsConfirmed = 1 AND ExpireDate > GETDATE()
+                )";
+                using (var cmd = new SqlCommand(checkSql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", recordId);
+                    var count = await cmd.ExecuteScalarAsync();
+                    if ((int)count == 0)
+                        throw new InvalidOperationException("Запись недоступна для бронирования");
+                }
+
+                // Создаем бронирование
+                const string reserveSql = @"
+                INSERT INTO ReservedRecords (RecordId, CustomerName, ExpireDate)
+                VALUES (@RecordId, @CustomerName, @ExpireDate)";
+                using (var cmd = new SqlCommand(reserveSql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@RecordId", recordId);
+                    cmd.Parameters.AddWithValue("@CustomerName", customerName);
+                    cmd.Parameters.AddWithValue("@ExpireDate", expireDate);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
     }
 }
