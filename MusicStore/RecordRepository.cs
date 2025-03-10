@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -113,6 +114,37 @@ namespace MusicStore
                     cmd.ExecuteNonQuery();
                 }
             }
+        }
+
+        public async Task SaleRecordAsync(int recordId, string customerName, decimal price)
+        {
+            using (var conn = Init_Conn.GetConnection())
+            {
+                await conn.OpenAsync();
+
+                // Проверяем наличие записи
+                const string checkSql = "SELECT COUNT(*) FROM Records WHERE Id = @Id";
+                using (var cmd = new SqlCommand(checkSql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", recordId);
+                    var count = await cmd.ExecuteScalarAsync();
+                    if ((int)count == 0)
+                        throw new InvalidOperationException("Запись не найдена");
+                }
+
+                // Добавляем продажу
+                const string saleSql = @"
+                INSERT INTO Sales (RecordId, CustomerName, Price)
+                VALUES (@RecordId, @CustomerName, @Price)";
+                using (var cmd = new SqlCommand(saleSql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@RecordId", recordId);
+                    cmd.Parameters.AddWithValue("@CustomerName", customerName);
+                    cmd.Parameters.AddWithValue("@Price", price);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+
         }
     }
 }
