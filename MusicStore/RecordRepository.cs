@@ -146,5 +146,27 @@ namespace MusicStore
             }
 
         }
+
+        public async Task AddStockOperationAsync(int recordId, string operationType, int quantity, string reason)
+        {
+            using (var conn = Init_Conn.GetConnection())
+            {
+                await conn.OpenAsync();
+
+                const string sql = @"
+                INSERT INTO StockOperations (RecordId, OperationType, Quantity, Reason)
+                VALUES (@RecordId, @OperationType, @Quantity, @Reason)";
+                using (var cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@RecordId", recordId);
+                    cmd.Parameters.AddWithValue("@OperationType", operationType);
+                    cmd.Parameters.AddWithValue("@Quantity", quantity);
+                    cmd.Parameters.AddWithValue("@Reason", reason);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
+
     }
 }
