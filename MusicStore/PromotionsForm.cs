@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -28,7 +22,6 @@ namespace MusicStore
 
         public PromotionsForm()
         {
-            InitializeComponent();
             InitializeComponent();
             _repository = new RecordRepository();
             LoadRecords();
@@ -56,7 +49,7 @@ namespace MusicStore
             }
         }
 
-        private void btnAddPromotion_Click(object sender, EventArgs e)
+        private async void btnAddPromotion_Click(object sender, EventArgs e)
         {
             if (ValidateInput())
             {
@@ -68,7 +61,7 @@ namespace MusicStore
                     var discount = (decimal)numDiscount.Value;
                     var description = txtDescription.Text.Trim();
 
-                    _repository.CreatePromotionAsync(recordId, startDate, endDate, discount, description);
+                    await _repository.CreatePromotionAsync(recordId, startDate, endDate, discount, description);
                     MessageBox.Show("Акция создана успешно!");
                     ClearFields();
                 }
