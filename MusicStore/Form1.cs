@@ -202,5 +202,20 @@ namespace MusicStore
             }
         }
 
+        private async void search_Click(object sender, EventArgs e)
+        {
+            using (var searchForm = new SearchForm())
+            {
+                if (searchForm.ShowDialog() == DialogResult.OK)
+                {
+                    var records = await repository.SearchRecordsAsync(
+                        searchForm.Title,
+                        searchForm.Artist,
+                        searchForm.Genre
+                    );
+                    bindingSource.DataSource = records;
+                }
+            }
+        }
     } 
 }
