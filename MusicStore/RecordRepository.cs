@@ -250,5 +250,52 @@ namespace MusicStore
                 }
             }
         }
+
+        public async Task<List<Record>> SearchRecordsAsync(string title, string artist, string genre)
+        {
+            using (var conn = Init_Conn.GetConnection())
+            {
+                await conn.OpenAsync();
+                const string sql = @"SELECT Id, Title, Artist, Publisher, TrackCount, 
+                                     Genre, ReleaseYear, CostPrice, SellingPrice 
+                                     FROM Records 
+                                     WHERE (@Title IS NULL OR Title LIKE @TitlePattern)
+                                     AND (@Artist IS NULL OR Artist LIKE @ArtistPattern)
+                                     AND (@Genre IS NULL OR Genre LIKE @GenrePattern)
+                                     ORDER BY Title";
+
+                using (var cmd = new SqlCommand(sql, conn))
+                {
+                    // Добавляем параметры с шаблонами поиска
+                    cmd.Parameters.AddWithValue("@Title", string.IsNullOrEmpty(title) ? (object)DBNull.Value : title);
+                    cmd.Parameters.AddWithValue("@TitlePattern", string.IsNullOrEmpty(title) ? (object)DBNull.Value : $"%{title}%");
+                    cmd.Parameters.AddWithValue("@Artist", string.IsNullOrEmpty(artist) ? (object)DBNull.Value : artist);
+                    cmd.Parameters.AddWithValue("@ArtistPattern", string.IsNullOrEmpty(artist) ? (object)DBNull.Value : $"%{artist}%");
+                    cmd.Parameters.AddWithValue("@Genre", string.IsNullOrEmpty(genre) ? (object)DBNull.Value : genre);
+                    cmd.Parameters.AddWithValue("@GenrePattern", string.IsNullOrEmpty(genre) ? (object)DBNull.Value : $"%{genre}%");
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        var records = new List<Record>();
+                        while (await reader.ReadAsync())
+                        {
+                            records.Add(new Record
+                            {
+                                Id = reader.GetInt32(0),
+                                Title = reader.GetString(1),
+                                Artist = reader.GetString(2),
+                                Publisher = reader.GetString(3),
+                                TrackCount = reader.GetInt32(4),
+                                Genre = reader.GetString(5),
+                                ReleaseYear = reader.GetInt32(6),
+                                CostPrice = reader.GetDecimal(7),
+                                SellingPrice = reader.GetDecimal(8)
+                            });
+                        }
+                        return records;
+                    }
+                }
+            }
+        }
     }
 }
