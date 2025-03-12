@@ -28,7 +28,7 @@ namespace MusicStore
                 this.Controls.Add(dgvRecords);
             }
             InitControls();
-            Task task = LoadData();
+            LoadData();
         }
 
         private void InitControls()
@@ -141,5 +141,66 @@ namespace MusicStore
                 }
             }
         }
-    }
+
+        private async void btnSale_Click_Click(object sender, EventArgs e)
+        {
+            if (bindingSource.Current != null)
+            {
+                var record = (Record)bindingSource.Current;
+                var saleForm = new SaleForm(record);
+
+                if (saleForm.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        await repository.SaleRecordAsync(record.Id, saleForm.CustomerName, saleForm.Price)
+                            .ConfigureAwait(false);
+
+                        await LoadData().ConfigureAwait(false);
+                        MessageBox.Show("Продажа успешно оформлена!");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void btnStock_Click(object sender, EventArgs e)
+        {
+            var stockForm = new StockOperationsForm();
+            stockForm.ShowDialog();
+        }
+
+        private void btnPromotions_Click(object sender, EventArgs e)
+        {
+            var promotionsForm = new PromotionsForm();
+            promotionsForm.ShowDialog();
+
+        }
+
+        private async void btnReserve_Click(object sender, EventArgs e)
+        {
+            if (bindingSource.Current != null)
+            {
+                var record = (Record)bindingSource.Current;
+                var reserveForm = new ReserveForm(record);
+                if (reserveForm.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        await repository.ReserveRecordAsync(record.Id, reserveForm.CustomerName, reserveForm.ExpireDate);
+                        MessageBox.Show("Запись успешно забронирована!");
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+    } 
 }
