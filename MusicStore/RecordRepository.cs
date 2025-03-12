@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -118,33 +119,59 @@ namespace MusicStore
 
         public async Task SaleRecordAsync(int recordId, string customerName, decimal price)
         {
-            using (var conn = Init_Conn.GetConnection())
+            try
             {
-                await conn.OpenAsync();
-
-                // Проверяем наличие записи
-                const string checkSql = "SELECT COUNT(*) FROM Records WHERE Id = @Id";
-                using (var cmd = new SqlCommand(checkSql, conn))
+                using (var conn = Init_Conn.GetConnection())
                 {
-                    cmd.Parameters.AddWithValue("@Id", recordId);
-                    var count = await cmd.ExecuteScalarAsync();
-                    if ((int)count == 0)
-                        throw new InvalidOperationException("Запись не найдена");
-                }
+                    await conn.OpenAsync();
 
-                // Добавляем продажу
-                const string saleSql = @"
+                    if (conn.State != ConnectionState.Open)
+                    {
+                        throw new Exception("Ошибка соединения с базой данных");
+                    }
+
+                    // Проверяем наличие записи
+                    const string checkSql = "SELECT COUNT(*) FROM Records WHERE Id = @Id";
+                    using (var cmd = new SqlCommand(checkSql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", recordId);
+                        var count = await cmd.ExecuteScalarAsync();
+                        if ((int)count == 0)
+                            throw new InvalidOperationException("Запись не найдена");
+                    }
+
+                    // Начинаем транзакцию
+                    using (var transaction = conn.BeginTransaction(IsolationLevel.ReadCommitted))
+                    {
+                        try
+                        {
+                            // Добавляем продажу
+                            const string saleSql = @"
                 INSERT INTO Sales (RecordId, CustomerName, Price)
                 VALUES (@RecordId, @CustomerName, @Price)";
-                using (var cmd = new SqlCommand(saleSql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@RecordId", recordId);
-                    cmd.Parameters.AddWithValue("@CustomerName", customerName);
-                    cmd.Parameters.AddWithValue("@Price", price);
-                    await cmd.ExecuteNonQueryAsync();
+                            using (var cmd = new SqlCommand(saleSql, conn, transaction))
+                            {
+                                cmd.Parameters.AddWithValue("@RecordId", recordId);
+                                cmd.Parameters.AddWithValue("@CustomerName", customerName);
+                                cmd.Parameters.AddWithValue("@Price", price);
+                                await cmd.ExecuteNonQueryAsync();
+                            }
+
+                            // Подтверждаем транзакцию
+                            transaction.Commit();
+                        }
+                        catch (SqlException ex)
+                        {
+                            transaction.Rollback();
+                            throw new Exception($"Ошибка при сохранении продажи: {ex.Message}");
+                        }
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                throw new Exception($"Ошибка при сохранении продажи: {ex.Message}");
+            }
         }
 
         public async Task AddStockOperationAsync(int recordId, string operationType, int quantity, string reason)
