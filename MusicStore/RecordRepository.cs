@@ -43,11 +43,11 @@ namespace MusicStore
             return records;
         }
 
-        public void AddRecord(Record record)
+        public async Task AddRecordAsync(Record record)
         {
             using (var conn = Init_Conn.GetConnection())
             {
-                conn.Open();
+                await conn.OpenAsync();
                 const string sql = @"INSERT INTO Records (Title, Artist, Publisher, TrackCount, 
                            Genre, ReleaseYear, CostPrice, SellingPrice)
                            VALUES (@Title, @Artist, @Publisher, @TrackCount, 
@@ -69,11 +69,11 @@ namespace MusicStore
             }
         }
 
-        public void UpdateRecord(Record record)
+        public async Task UpdateRecord(Record record)
         {
             using (var conn = Init_Conn.GetConnection())
             {
-                conn.Open();
+                await conn.OpenAsync();
                 const string sql = @"UPDATE Records SET 
                                Title = @Title,
                                Artist = @Artist,
@@ -102,11 +102,11 @@ namespace MusicStore
             }
         }
 
-        public void DeleteRecord(int id)
+        public async Task DeleteRecord(int id)
         {
             using (var conn = Init_Conn.GetConnection())
             {
-                conn.Open();
+                await conn.OpenAsync();
                 const string sql = @"DELETE FROM Records WHERE Id = @Id";
 
                 using (var cmd = new SqlCommand(sql, conn))
