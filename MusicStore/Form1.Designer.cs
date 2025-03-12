@@ -38,8 +38,8 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.search = new System.Windows.Forms.Button();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecords)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -151,7 +151,7 @@
             this.search.Name = "search";
             this.search.Size = new System.Drawing.Size(174, 35);
             this.search.TabIndex = 7;
-            this.search.Text = "Поиск";
+            this.search.Text = "Поиск записей";
             this.search.UseVisualStyleBackColor = true;
             this.search.Click += new System.EventHandler(this.search_Click);
             // 
