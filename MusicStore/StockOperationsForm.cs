@@ -40,7 +40,7 @@ namespace MusicStore
             }
         }
 
-        private void btnAddOperation_Click(object sender, EventArgs e)
+        private async void btnAddOperation_Click(object sender, EventArgs e)
         {
             if (ValidateInput())
             {
@@ -51,7 +51,7 @@ namespace MusicStore
                     var quantity = (int)numQuantity.Value;
                     var reason = txtReason.Text.Trim();
 
-                    _repository.AddStockOperationAsync(recordId, operationType, quantity, reason);
+                    await _repository.AddStockOperationAsync(recordId, operationType, quantity, reason);
                     MessageBox.Show("Операция добавлена успешно!");
                     ClearFields();
                 }
