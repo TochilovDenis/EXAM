@@ -40,6 +40,7 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.search = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.btnStatistics = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecords)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -58,7 +59,7 @@
             // 
             // btnReserve
             // 
-            this.btnReserve.Location = new System.Drawing.Point(543, 39);
+            this.btnReserve.Location = new System.Drawing.Point(571, 39);
             this.btnReserve.Name = "btnReserve";
             this.btnReserve.Size = new System.Drawing.Size(174, 35);
             this.btnReserve.TabIndex = 6;
@@ -68,7 +69,7 @@
             // 
             // btnPromotions
             // 
-            this.btnPromotions.Location = new System.Drawing.Point(363, 39);
+            this.btnPromotions.Location = new System.Drawing.Point(391, 39);
             this.btnPromotions.Name = "btnPromotions";
             this.btnPromotions.Size = new System.Drawing.Size(174, 35);
             this.btnPromotions.TabIndex = 5;
@@ -80,7 +81,7 @@
             // 
             this.btnStock.Location = new System.Drawing.Point(183, 39);
             this.btnStock.Name = "btnStock";
-            this.btnStock.Size = new System.Drawing.Size(174, 35);
+            this.btnStock.Size = new System.Drawing.Size(202, 35);
             this.btnStock.TabIndex = 4;
             this.btnStock.Text = "Операции склада";
             this.btnStock.UseVisualStyleBackColor = true;
@@ -99,7 +100,7 @@
             // btnDelete
             // 
             this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnDelete.Location = new System.Drawing.Point(501, 3);
+            this.btnDelete.Location = new System.Drawing.Point(572, 3);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(214, 30);
             this.btnDelete.TabIndex = 2;
@@ -110,7 +111,7 @@
             // btnEdit
             // 
             this.btnEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnEdit.Location = new System.Drawing.Point(223, 3);
+            this.btnEdit.Location = new System.Drawing.Point(294, 3);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(272, 30);
             this.btnEdit.TabIndex = 1;
@@ -123,7 +124,7 @@
             this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnAdd.Location = new System.Drawing.Point(3, 3);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(214, 30);
+            this.btnAdd.Size = new System.Drawing.Size(285, 30);
             this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "Добавить новый запись";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -139,10 +140,11 @@
             this.flowLayoutPanel1.Controls.Add(this.btnPromotions);
             this.flowLayoutPanel1.Controls.Add(this.btnReserve);
             this.flowLayoutPanel1.Controls.Add(this.search);
+            this.flowLayoutPanel1.Controls.Add(this.btnStatistics);
             this.flowLayoutPanel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.flowLayoutPanel1.Location = new System.Drawing.Point(23, 12);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(728, 124);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(877, 124);
             this.flowLayoutPanel1.TabIndex = 4;
             // 
             // search
@@ -154,6 +156,16 @@
             this.search.Text = "Поиск записей";
             this.search.UseVisualStyleBackColor = true;
             this.search.Click += new System.EventHandler(this.search_Click);
+            // 
+            // btnStatistics
+            // 
+            this.btnStatistics.Location = new System.Drawing.Point(183, 80);
+            this.btnStatistics.Name = "btnStatistics";
+            this.btnStatistics.Size = new System.Drawing.Size(174, 35);
+            this.btnStatistics.TabIndex = 8;
+            this.btnStatistics.Text = "Статистика";
+            this.btnStatistics.UseVisualStyleBackColor = true;
+            this.btnStatistics.Click += new System.EventHandler(this.btnStatistics_Click);
             // 
             // Form1
             // 
@@ -183,6 +195,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.Button search;
+        private System.Windows.Forms.Button btnStatistics;
     }
 }
 
