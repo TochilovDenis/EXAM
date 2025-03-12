@@ -46,6 +46,7 @@
             this.nudSellingPrice = new System.Windows.Forms.NumericUpDown();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnCancel_Click = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudTrackCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudReleaseYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCostPrice)).BeginInit();
@@ -228,10 +229,9 @@
             // 
             // btnOK
             // 
-            this.btnOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnOK.BackColor = System.Drawing.Color.White;
             this.btnOK.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnOK.Location = new System.Drawing.Point(248, 292);
+            this.btnOK.Location = new System.Drawing.Point(191, 290);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 29);
             this.btnOK.TabIndex = 16;
@@ -241,6 +241,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnCancel_Click);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.btnOK);
             this.panel1.Controls.Add(this.label2);
@@ -262,6 +263,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(573, 351);
             this.panel1.TabIndex = 17;
+            // 
+            // btnCancel_Click
+            // 
+            this.btnCancel_Click.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnCancel_Click.Location = new System.Drawing.Point(284, 290);
+            this.btnCancel_Click.Name = "btnCancel_Click";
+            this.btnCancel_Click.Size = new System.Drawing.Size(88, 29);
+            this.btnCancel_Click.TabIndex = 17;
+            this.btnCancel_Click.Text = "Отмена";
+            this.btnCancel_Click.UseVisualStyleBackColor = true;
+            this.btnCancel_Click.Click += new System.EventHandler(this.btnCancel_Click_Click);
             // 
             // RecordForm
             // 
@@ -301,5 +313,6 @@
         private System.Windows.Forms.NumericUpDown nudSellingPrice;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnCancel_Click;
     }
 }
