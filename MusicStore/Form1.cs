@@ -90,11 +90,11 @@ namespace MusicStore
                 DataPropertyName = "SellingPrice"
             });
         }
-        private async Task LoadData()
+        private async void LoadData()
         {
             try
             {
-                var records = await repository.GetAllRecordsAsync();
+                var records = await repository.GetAllRecordsAsync().ConfigureAwait(false);
                 bindingSource.DataSource = records;
             }
             catch (Exception ex)
@@ -106,11 +106,18 @@ namespace MusicStore
 
         private async void btnAdd_Click_1(object sender, EventArgs e)
         {
-            var form = new RecordForm(null);
-            if (form.ShowDialog() == DialogResult.OK)
+            try
             {
-                repository.AddRecord(form.Record);
-                await LoadData();
+                var form = new RecordForm(null);
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    await repository.AddRecordAsync(form.Record);
+                    LoadData();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при добавлении записи: {ex.Message}");
             }
         }
 
@@ -122,8 +129,8 @@ namespace MusicStore
                 var form = new RecordForm(record);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    repository.UpdateRecord(form.Record);
-                    await LoadData();
+                    await repository.UpdateRecord(form.Record);
+                    LoadData();
                 }
             }
         }
@@ -136,8 +143,8 @@ namespace MusicStore
                 if (MessageBox.Show($"Удалить запись '{record.Title}'?",
                     "Подтверждение", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    repository.DeleteRecord(record.Id);
-                    await LoadData();
+                    await repository.DeleteRecord(record.Id);
+                    LoadData();
                 }
             }
         }
@@ -156,7 +163,7 @@ namespace MusicStore
                         await repository.SaleRecordAsync(record.Id, saleForm.CustomerName, saleForm.Price)
                             .ConfigureAwait(false);
 
-                        await LoadData().ConfigureAwait(false);
+                        LoadData();
                         MessageBox.Show("Продажа успешно оформлена!");
                     }
                     catch (Exception ex)
@@ -216,6 +223,12 @@ namespace MusicStore
                     bindingSource.DataSource = records;
                 }
             }
+        }
+
+        private void btnStatistics_Click(object sender, EventArgs e)
+        {
+            var statsForm = new StatisticsForm();
+            statsForm.ShowDialog();
         }
     } 
 }
