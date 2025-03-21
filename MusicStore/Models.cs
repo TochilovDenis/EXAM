@@ -189,4 +189,14 @@ namespace MusicStore.Models
             return !IsConfirmed && DateTime.Now <= ExpireDate;
         }
     }
+
+    // Класс логин и пароль
+    public class User
+    {
+        public int Id { get; set; }
+        public string Login { get; set; }
+        public string PasswordHash { get; set; }
+        public string Role { get; set; }
+        public bool IsActive { get; set; }
+    }
 }
