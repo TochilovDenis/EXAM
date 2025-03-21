@@ -1,24 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\DEX\\Academy_TOP\\EXAM\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{4D70B9AB-4E51-413F-8369-D7CA8371AF71}|MusicStore\\MusicStore.csproj|c:\\dex\\academy_top\\exam\\musicstore\\searchform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4D70B9AB-4E51-413F-8369-D7CA8371AF71}|MusicStore\\MusicStore.csproj|solutionrelative:musicstore\\searchform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4D70B9AB-4E51-413F-8369-D7CA8371AF71}|MusicStore\\MusicStore.csproj|c:\\dex\\academy_top\\exam\\musicstore\\searchform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4D70B9AB-4E51-413F-8369-D7CA8371AF71}|MusicStore\\MusicStore.csproj|solutionrelative:musicstore\\searchform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4D70B9AB-4E51-413F-8369-D7CA8371AF71}|MusicStore\\MusicStore.csproj|c:\\dex\\academy_top\\exam\\musicstore\\searchform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{4D70B9AB-4E51-413F-8369-D7CA8371AF71}|MusicStore\\MusicStore.csproj|solutionrelative:musicstore\\searchform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4D70B9AB-4E51-413F-8369-D7CA8371AF71}|MusicStore\\MusicStore.csproj|c:\\dex\\academy_top\\exam\\musicstore\\recordrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4D70B9AB-4E51-413F-8369-D7CA8371AF71}|MusicStore\\MusicStore.csproj|solutionrelative:musicstore\\recordrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -26,59 +9,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": -1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "SearchForm.Designer.cs",
-              "DocumentMoniker": "C:\\DEX\\Academy_TOP\\EXAM\\MusicStore\\SearchForm.Designer.cs",
-              "RelativeDocumentMoniker": "MusicStore\\SearchForm.Designer.cs",
-              "ToolTip": "C:\\DEX\\Academy_TOP\\EXAM\\MusicStore\\SearchForm.Designer.cs",
-              "RelativeToolTip": "MusicStore\\SearchForm.Designer.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-21T16:38:41.02Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "SearchForm.cs",
-              "DocumentMoniker": "C:\\DEX\\Academy_TOP\\EXAM\\MusicStore\\SearchForm.cs",
-              "RelativeDocumentMoniker": "MusicStore\\SearchForm.cs",
-              "ToolTip": "C:\\DEX\\Academy_TOP\\EXAM\\MusicStore\\SearchForm.cs",
-              "RelativeToolTip": "MusicStore\\SearchForm.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-21T16:38:36.243Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SearchForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
-              "DocumentMoniker": "C:\\DEX\\Academy_TOP\\EXAM\\MusicStore\\SearchForm.cs",
-              "RelativeDocumentMoniker": "MusicStore\\SearchForm.cs",
-              "ToolTip": "C:\\DEX\\Academy_TOP\\EXAM\\MusicStore\\SearchForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
-              "RelativeToolTip": "MusicStore\\SearchForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-21T16:38:31.955Z",
-              "EditorCaption": " [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "RecordRepository.cs",
-              "DocumentMoniker": "C:\\DEX\\Academy_TOP\\EXAM\\MusicStore\\RecordRepository.cs",
-              "RelativeDocumentMoniker": "MusicStore\\RecordRepository.cs",
-              "ToolTip": "C:\\DEX\\Academy_TOP\\EXAM\\MusicStore\\RecordRepository.cs",
-              "RelativeToolTip": "MusicStore\\RecordRepository.cs",
-              "ViewState": "AgIAAFkBAAAAAAAAAAAkwIgBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-21T16:34:27.663Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
