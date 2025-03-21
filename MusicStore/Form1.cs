@@ -7,13 +7,30 @@ namespace MusicStore
     {
         private readonly RecordRepository repository;
         private readonly BindingSource bindingSource;
+        private readonly UserRepository userRepository;
+
         public Form1()
         {
             InitializeComponent();
 
             repository = new RecordRepository();
             bindingSource = new BindingSource();
+            userRepository = new UserRepository();
 
+
+            // Проверяем, есть ли сохранённый пользователь
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.CurrentUserLogin))
+            {
+                using (var loginForm = new LoginForm())
+                {
+                    if (loginForm.ShowDialog() != DialogResult.OK)
+                    {
+                        Application.Exit();
+                        return;
+                    }
+                }
+            }
+          
             if (dgvRecords == null)
             {
                 dgvRecords = new DataGridView();
