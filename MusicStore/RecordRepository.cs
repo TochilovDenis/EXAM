@@ -107,17 +107,63 @@ namespace MusicStore
             using (var conn = Init_Conn.GetConnection())
             {
                 await conn.OpenAsync();
-                const string sql = @"DELETE FROM Records WHERE Id = @Id";
-
-                using (var cmd = new SqlCommand(sql, conn))
+                using (var transaction = conn.BeginTransaction())
                 {
-                    cmd.Parameters.AddWithValue("@Id", id);
-                    cmd.ExecuteNonQuery();
+                    try
+                    {
+                        // Проверяем наличие бронирований
+                        const string checkReservationsSql = @"
+                    SELECT COUNT(*) 
+                    FROM ReservedRecords 
+                    WHERE RecordId = @RecordId 
+                    AND IsConfirmed = 1 
+                    AND ExpireDate > GETDATE()";
+
+                        using (var cmd = new SqlCommand(checkReservationsSql, conn, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@RecordId", id);
+                            var count = await cmd.ExecuteScalarAsync();
+                            if ((int)count > 0)
+                            {
+                                throw new InvalidOperationException(
+                                    "Нельзя удалить запись, так как на неё есть активные бронирования");
+                            }
+                        }
+
+                        // Удаляем бронирования
+                        const string deleteReservationsSql = @"
+                    DELETE FROM ReservedRecords 
+                    WHERE RecordId = @RecordId";
+
+                        using (var cmd = new SqlCommand(deleteReservationsSql, conn, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@RecordId", id);
+                            await cmd.ExecuteNonQueryAsync();
+                        }
+
+                        // Удаляем запись
+                        const string deleteRecordSql = @"
+                    DELETE FROM Records 
+                    WHERE Id = @Id";
+
+                        using (var cmd = new SqlCommand(deleteRecordSql, conn, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@Id", id);
+                            await cmd.ExecuteNonQueryAsync();
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }
 
-        public async Task SaleRecordAsync(int recordId, string customerName, decimal price)
+        public async Task SaleRecordAsync(int recordId, int? customerId, decimal price)
         {
             try
             {
@@ -147,14 +193,20 @@ namespace MusicStore
                         {
                             // Добавляем продажу
                             const string saleSql = @"
-                INSERT INTO Sales (RecordId, CustomerName, Price)
-                VALUES (@RecordId, @CustomerName, @Price)";
+                    INSERT INTO Sales (RecordId, CustomerName, Price)
+                    VALUES (@RecordId, @CustomerName, @Price)";
                             using (var cmd = new SqlCommand(saleSql, conn, transaction))
                             {
                                 cmd.Parameters.AddWithValue("@RecordId", recordId);
-                                cmd.Parameters.AddWithValue("@CustomerName", customerName);
+                                cmd.Parameters.AddWithValue("@CustomerName", Properties.Settings.Default.CurrentUserLogin);
                                 cmd.Parameters.AddWithValue("@Price", price);
                                 await cmd.ExecuteNonQueryAsync();
+                            }
+
+                            // Обновляем сумму потраченных средств и скидку для постоянного покупателя
+                            if (!string.IsNullOrEmpty(Properties.Settings.Default.CurrentUserLogin))
+                            {
+                                await UpdateCustomerDiscountAsync(conn, transaction, price);
                             }
 
                             // Подтверждаем транзакцию
@@ -174,6 +226,45 @@ namespace MusicStore
             }
         }
 
+        private async Task UpdateCustomerDiscountAsync(SqlConnection conn, SqlTransaction transaction, decimal amount)
+        {
+            const string sql = @"
+                                UPDATE cd
+                                SET cd.TotalSpent = cd.TotalSpent + @Amount,
+                                cd.DiscountPercentage = 
+                                    CASE 
+                                        WHEN cd.TotalSpent + @Amount >= 10000 THEN 15.00
+                                        WHEN cd.TotalSpent + @Amount >= 5000 THEN 10.00
+                                        WHEN cd.TotalSpent + @Amount >= 1000 THEN 5.00
+                                        ELSE cd.DiscountPercentage
+                                    END
+                            FROM CustomerDiscounts cd
+                            WHERE cd.CustomerId = (SELECT Id FROM Users WHERE Login = @Login)";
+
+            using (var cmd = new SqlCommand(sql, conn, transaction))
+            {
+                cmd.Parameters.AddWithValue("@Login", Properties.Settings.Default.CurrentUserLogin);
+                cmd.Parameters.AddWithValue("@Amount", amount);
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+
+        public async Task<decimal> GetCustomerDiscountAsync(int customerId)
+        {
+            using (var conn = Init_Conn.GetConnection())
+            {
+                await conn.OpenAsync();
+                const string sql = "SELECT DiscountPercentage FROM CustomerDiscounts WHERE CustomerId = @CustomerId";
+
+                using (var cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@CustomerId", customerId);
+                    var result = await cmd.ExecuteScalarAsync();
+                    return result == null ? 0 : Convert.ToDecimal(result);
+                }
+            }
+        }
         public async Task AddStockOperationAsync(int recordId, string operationType, int quantity, string reason)
         {
             using (var conn = Init_Conn.GetConnection())
