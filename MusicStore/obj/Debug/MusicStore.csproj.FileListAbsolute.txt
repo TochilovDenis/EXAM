@@ -17,3 +17,5 @@ C:\DEX\Academy_TOP\EXAM\MusicStore\obj\Debug\MusicStore.ReserveForm.resources
 C:\DEX\Academy_TOP\EXAM\MusicStore\obj\Debug\MusicStore.SearchForm.resources
 C:\DEX\Academy_TOP\EXAM\MusicStore\obj\Debug\MusicStore.StatisticsForm.resources
 C:\DEX\Academy_TOP\EXAM\MusicStore\obj\Debug\MusicStore.PromotionsForm.resources
+C:\DEX\Academy_TOP\EXAM\MusicStore\obj\Debug\MusicStore.LoginForm.resources
+C:\DEX\Academy_TOP\EXAM\MusicStore\obj\Debug\MusicStore.RegisterForm.resources
