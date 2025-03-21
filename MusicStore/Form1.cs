@@ -31,7 +31,7 @@ namespace MusicStore
             dgvRecords.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Id",
-                DataPropertyName = "ID"
+                DataPropertyName = "Id"
             });
 
             dgvRecords.Columns.Add(new DataGridViewTextBoxColumn
@@ -87,7 +87,16 @@ namespace MusicStore
             try
             {
                 var records = await repository.GetAllRecordsAsync().ConfigureAwait(false);
-                bindingSource.DataSource = records;
+                if (dgvRecords.InvokeRequired)
+                {
+                    dgvRecords.BeginInvoke(new Action(() =>
+                        bindingSource.DataSource = records
+                    ));
+                }
+                else
+                {
+                    bindingSource.DataSource = records;
+                }
             }
             catch (Exception ex)
             {
