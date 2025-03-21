@@ -201,6 +201,11 @@
             this.nudCostPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.nudCostPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nudCostPrice.Location = new System.Drawing.Point(191, 218);
+            this.nudCostPrice.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
             this.nudCostPrice.Name = "nudCostPrice";
             this.nudCostPrice.Size = new System.Drawing.Size(84, 22);
             this.nudCostPrice.TabIndex = 12;
@@ -222,6 +227,11 @@
             this.nudSellingPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.nudSellingPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nudSellingPrice.Location = new System.Drawing.Point(191, 251);
+            this.nudSellingPrice.Maximum = new decimal(new int[] {
+            200000,
+            0,
+            0,
+            0});
             this.nudSellingPrice.Name = "nudSellingPrice";
             this.nudSellingPrice.Size = new System.Drawing.Size(84, 22);
             this.nudSellingPrice.TabIndex = 14;
