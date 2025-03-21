@@ -22,7 +22,7 @@ namespace MusicStore
             InitializeComponent();
         }
 
-        private void BtnSearch_Click(object sender, EventArgs e)
+        private void btnSearch_Click_1(object sender, EventArgs e)
         {
             var args = new SearchEventArgs(
                 txtTitle.Text.Trim(),
@@ -34,7 +34,7 @@ namespace MusicStore
             this.Close();
         }
 
-        private void BtnCancel_Click(object sender, EventArgs e)
+        private void btnCancel_Click_1(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
