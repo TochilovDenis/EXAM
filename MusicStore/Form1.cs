@@ -178,9 +178,14 @@ namespace MusicStore
                 {
                     try
                     {
-                        await repository.SaleRecordAsync(record.Id, saleForm.CustomerName, saleForm.Price)
-                            .ConfigureAwait(false);
+                        int? customerId = null;
+                        if (!string.IsNullOrEmpty(Properties.Settings.Default.CurrentUserLogin))
+                        {
+                            var user = await userRepository.GetUserAsync(Properties.Settings.Default.CurrentUserLogin);
+                            customerId = user.Id;
+                        }
 
+                        await repository.SaleRecordAsync(record.Id, customerId, saleForm.Price);
                         LoadData();
                         MessageBox.Show("Продажа успешно оформлена!");
                     }
