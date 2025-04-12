@@ -72,7 +72,7 @@ async Task task_server(Socket client)
 
             Msg_server_c? r_m_t = JsonSerializer.Deserialize<Msg_server_c>(resp_json);
 
-            Console.WriteLine($"r_m_t.Command= {r_m_t.Command}-- r_m_t.Text {r_m_t.Text}");
+            Console.WriteLine($"r_m_t.Command = {r_m_t.Command} -- r_m_t.Text = {r_m_t.Text}");
 
 
             if (r_m_t.Command.IndexOf("name") == 0)
@@ -114,6 +114,7 @@ async Task task_server(Socket client)
                 //string path = @"C:\Users\user\Pictures\VBq-mzZR5aM.jpg";   // путь к файлу
 
                 string path = $"{r_m_t.Text}";
+
                 // чтение из файла
                 using (FileStream fstream = File.OpenRead(path))
                 {

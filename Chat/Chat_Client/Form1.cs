@@ -163,7 +163,7 @@ namespace Chat_Client
             }
         }
 
-        public void Add_msg(Msg_t? r_m_t)
+        public void Add_msg(Msg_t r_m_t)
         {
             TextBox textBox1 = new TextBox();
             textBox1.Text = r_m_t.Text;
@@ -175,7 +175,7 @@ namespace Chat_Client
             textBox1.ForeColor = System.Drawing.Color.Green;
             textBox1.Size = new System.Drawing.Size(flowLayoutPanel1.Size.Width - 10, 23);
 
-            //textBox1.Text = r_m_t.Sender + " : " + r_m_t.Text;
+            textBox1.Text = r_m_t.Sender + " : " + r_m_t.Text;
 
             if (r_m_t.Command.IndexOf("my_msg") == 0)
             {
