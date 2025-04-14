@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
@@ -94,7 +95,7 @@ async Task task_server(Socket client)
 
                 Console.WriteLine("команда-имя");
             }
-            else if (r_m_t.Command.IndexOf("get_clients") == 0)
+            else if (r_m_t.Command.IndexOf("get_client") == 0)
             {
                 /* string all_name_cln = "";
                  foreach (var person in people)
@@ -108,11 +109,8 @@ async Task task_server(Socket client)
 
                 Console.WriteLine("команда-пользователи");
             }
-
             else if (r_m_t.Command.IndexOf("file") == 0)
             {
-                //string path = @"C:\Users\user\Pictures\VBq-mzZR5aM.jpg";   // путь к файлу
-
                 string path = $"{r_m_t.Text}";
 
                 // чтение из файла
@@ -120,23 +118,26 @@ async Task task_server(Socket client)
                 {
 
                     byte[] requestData = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new Msg_server("file", fstream.Length.ToString(), "server", null)) + '\n');
-
-                    await client.SendAsync(requestData, SocketFlags.None);
-
                     byte[] buffer_file = new byte[fstream.Length];
                     await fstream.ReadAsync(buffer_file, 0, buffer_file.Length);
 
-                    await client.SendAsync(buffer_file, SocketFlags.None);
+                    foreach (Socket socket in sockets)
+                    {
+                        await socket.SendAsync(requestData, SocketFlags.None);
+
+                        await socket.SendAsync(buffer_file, SocketFlags.None);
+                    }
                 }
             }
-
             else if (r_m_t.Command.IndexOf("msg") == 0)
-            {
+            {   
+                Msg_server mtr = new Msg_server(r_m_t.Command, r_m_t.Text,name_client,null);
 
-                byte[] requestData = Encoding.UTF8.GetBytes(resp_json + '\n');
+                byte[] requestData = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(mtr) + '\n');
 
                 foreach (Socket socket in sockets)
                 {
+                
                     //await socket.SendAsync(requestData, SocketFlags.None);
 
                     if (socket != client)
@@ -145,8 +146,8 @@ async Task task_server(Socket client)
                     }
                     else
                     {
-                        r_m_t.Command = "my_msg";
-                        byte[] requestData2 = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(r_m_t) + '\n');
+                        mtr.Command = "my_msg";
+                        byte[] requestData2 = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(mtr) + '\n');
                         await socket.SendAsync(requestData2, SocketFlags.None);
                     }
 

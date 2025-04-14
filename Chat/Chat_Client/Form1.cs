@@ -50,7 +50,6 @@ namespace Chat_Client
         {
 
             //Создаем объект класса Msg_t_c 
-            Msg_t_c Msg_t_c = new Msg_t_c("get_clients", "", null);
             byte[] requestData = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new Msg_t_c("get_client", "", null)) + '\n');
             // отправляем данные
             await socket.SendAsync(requestData, SocketFlags.None);
@@ -72,7 +71,8 @@ namespace Chat_Client
                     {
                         using (FileStream stream = new FileStream(dialog.FileName, FileMode.Open))
                         {
-                            //pictureBox1.Image = Image.FromStream(stream);
+                            PictureBox pictureB = new PictureBox();
+                            pictureB.Image = Image.FromStream(stream);
 
                             // Отправляем уведомление о файле
                             byte[] requestData = Encoding.UTF8.GetBytes(
@@ -149,7 +149,7 @@ namespace Chat_Client
                     }
                     else
                     {
-                        string responseText = Encoding.UTF8.GetString(buffer.ToArray());
+                        string responseText = Encoding.UTF8.GetString([.. buffer]);
                         Msg_t? r_m_t = JsonSerializer.Deserialize<Msg_t>(responseText);
                         Add_msg(r_m_t);
                     }
@@ -179,7 +179,7 @@ namespace Chat_Client
 
             if (r_m_t.Command.IndexOf("my_msg") == 0)
             {
-                textBox1.Text = r_m_t.Text;
+                
                 textBox1.ForeColor = System.Drawing.Color.Blue;
                 textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             }
@@ -196,7 +196,7 @@ namespace Chat_Client
                 richTextBox1.Text += fileSize;
                 file_v = true;
             }
-
+            
             flowLayoutPanel1.Controls.Add(textBox1);
 
         }
